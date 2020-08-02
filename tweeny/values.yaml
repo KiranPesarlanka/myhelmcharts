@@ -1,0 +1,38 @@
+pv:
+  name: localpv
+  storage: 100M
+  mode: ReadWriteOnce
+  path: /mnt/redis
+
+pvc:
+  name: redispvc
+  storage: 100M
+  mode: ReadWriteOnce
+
+web:
+  deploy:
+    name: web
+    app: demo
+    image: kiranpesarlanka/tweeny
+    version: v1
+    port: 9090
+    replicas: 2
+  svc:
+    name: web
+    app: demo
+    port: 31580
+
+db:
+  pod:
+    name: redis
+    app: demo
+    image: redis
+    version: latest
+    port: 6379
+    volume:
+      name: redisvol
+  svc:
+    name: redis
+    app: demo
+    port: 6379
+

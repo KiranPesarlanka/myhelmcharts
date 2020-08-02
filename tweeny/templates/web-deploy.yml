@@ -1,0 +1,25 @@
+apiVersion: "apps/v1"
+kind: Deployment
+metadata: 
+  name: {{ .Values.web.deploy.name }} 
+  labels:
+    name: {{ .Values.web.deploy.name }}
+    app: {{ .Values.web.deploy.app }}
+spec:
+  replicas: {{.Values.web.deploy.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.web.deploy.app }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.web.deploy.name }}
+        app: {{ .Values.web.deploy.app }}
+    spec:
+      containers:
+        - name: {{ .Values.web.deploy.name }}
+          image: {{ .Values.web.deploy.image }}:{{ .Values.web.deploy.version }}
+          ports:
+            - containerPort: {{ .Values.web.deploy.port }}
+              name: http
+              protocol: TCP

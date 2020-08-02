@@ -1,0 +1,21 @@
+apiVersion: "v1"
+kind: Pod
+metadata:
+  name: {{.Values.db.pod.name }}
+  labels:
+    name: {{.Values.db.pod.name }}
+    app: {{.Values.db.pod.app }}
+spec:
+  volumes:
+    - name: {{.Values.db.pod.volume.name }}
+      persistentVolumeClaim:
+        claimName: {{.Values.pvc.name }}
+  containers:
+    - name: {{ .Values.db.pod.name }}
+      image: {{ .Values.db.pod.image }}:{{ .Values.db.pod.version }}
+      ports:
+        - containerPort: {{ .Values.db.pod.port }}         
+          protocol: TCP
+      volumeMounts:
+        - mountPath: {{ .Values.pv.path | quote }}
+          name: {{ .Values.db.pod.volume.name }}

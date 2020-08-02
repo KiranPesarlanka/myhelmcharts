@@ -1,0 +1,19 @@
+environment: dev
+pod:
+  name: nginx
+  version: latest
+  port:
+    name: http
+    port: 80
+    protocol: TCP
+
+service:
+  name: nginxsvc
+  type: NodePort
+  port:
+    name: nodeopen
+    port: 31234
+    
+
+
+
