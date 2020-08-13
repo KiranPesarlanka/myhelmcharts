@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ignite
+  namespace: ignite
+spec:
+  serviceName: ignite
+  selector:
+    matchLabels:
+      app: ignite
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: ignite
+    spec:
+      serviceAccountName: ignite
+      containers:
+      - name: ignite
+        image: kiranpesarlanka/ignite:v2
+        ports:
+        - containerPort: 47100 # communication SPI port number.
+        - containerPort: 47500 # discovery SPI port number.
+        - containerPort: 10800 # SQL port number.
+        - containerPort: 8080 # REST port number.
+        - containerPort: 10900 #Thin clients port number.
+        volumeMounts:
+        - mountPath: "/opt/work"
+          name: ignitework
+  volumeClaimTemplates:
+  - metadata:
+      name: ignitework
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "1Gi"
